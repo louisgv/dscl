@@ -1,0 +1,8 @@
+{
+	"id": "dscl",
+	"name": "DSCL",
+	"description": "A decentralized socket connection lobby",
+	"version": "0.1",
+	"author": "Blueberry Lab",
+	"iconUrl": "title.png"
+}
