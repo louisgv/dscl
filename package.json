@@ -11,7 +11,8 @@
     "oo7-react": "^0.4.1",
     "parity-reactive-ui": "^0.4.3",
     "react": "^15.5.4",
-    "react-dom": "^15.5.4"
+    "react-dom": "^15.5.4",
+    "simple-peer": "^8.1.0"
   },
   "devDependencies": {
     "babel-loader": "^7.0.0",

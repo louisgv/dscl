@@ -3,28 +3,53 @@ contract Facilitator {
 
     uint public gasToTimeRatio = 5000;
 
-    uint public maximumSessionLength; // In ms
+		uint public globalPublicKey = 4294937295;
 
-    uint sessionStartTimestamp;
+		struct SessionData {
+			bytes32	encryptedIP;
+			uint startTimestamp;
+			uint sessionMaxReward;
 
-    uint sessionMaxReward;
+			uint randomFromA;
+			uint randomFromB;
+		}
 
-    event SessionShouldStart(address host, uint sessionLength, bytes data);
+		mapping (address => SessionData) public sessionData;
 
-    event Sent(address from, address to, uint amount);
+		event SessionInitiated(
+			uint globalKey,
+			uint randomFromA,
+			uint randomFromB,
+			bytes data
+		);
 
-    address host;
+		event Sent(address from, address to, uint amount);
 
-    function calculateSessionLength(address _host){
-        // one gas equal 5 seconds or 5000ms
+		/* A will call this to send B a request
+		*/
+		function requestSession(address _host) {
+			
+		}
 
-        sessionStartTimestamp = now;
-        host = _host;
-        SessionShouldStart(host, maximumSessionLength, msg.data);
+		/* A will call this after receiving B's public secret
+		*/
+    function initiateSession(address _host){
+
+			// one gas equal 5 seconds or 5000ms
+			sessionData[_host].startTimestamp = now;
+
+	    SessionInitiated(
+				globalPublicKey,
+				sessionData[_host].randomFromA,
+				sessionData[_host].randomFromB,
+				msg.data
+			);
     }
 
+		/* B will call this to receive reward from A
+		*/
     function validateSession(){
-        uint reward = (now - sessionStartTimestamp)/gasToTimeRatio;
-        host.transfer(reward);
+        /*uint reward = (now - sessionStartTimestamp)/gasToTimeRatio;
+        host.transfer(reward);*/
     }
 }
