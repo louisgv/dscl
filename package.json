@@ -1,7 +1,7 @@
 {
-  "name": "d2fa",
+  "name": "dscl",
   "version": "0.0.1",
-  "description": "Decentralized 2 Factor Authentication",
+  "description": "Decentralized Socket Connection Lobby",
   "main": "webpack.config.js",
   "dependencies": {
     "babel-core": "^6.24.1",
@@ -32,20 +32,12 @@
     "watch": "webpack --watch",
     "start": "webpack-dev-server --content-base build"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ethcore/skeleton.git"
-  },
   "keywords": [
     "Dapp",
     "Parity",
     "Reactive",
     "Template"
   ],
-  "author": "Parity Technologies Ltd",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/ethcore/skeleton/issues"
-  },
-  "homepage": "https://github.com/ethcore/skeleton#readme"
+  "author": "Blueberry LAB",
+  "license": "UNLICENSED"
 }
