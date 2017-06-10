@@ -20,26 +20,18 @@ export class App extends React.Component {
 		}
 
 		this.store = new Bond();
+		this.store.tie(this.handleTie);
+	}
 
-		this.store.then(({
-			credentialValid
-		}) => {
-			if(credentialValid) {
-				this.setState({
-					view: 'home'
-				});
-			}
-		})
+	handleTie =({})=> {
+
 	}
 
 	get content() {
 		switch(this.state.view) {
 		case 'home':
-			return(<Home/>)
-			break;
-		case 'login':
 		default:
-			return(<Login store={this.store}/>)
+			return(<Home store={this.store}/>)
 		}
 	}
 
