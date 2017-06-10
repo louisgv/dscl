@@ -6,10 +6,10 @@ import {
 
 import Home from './Home';
 import Login from './Login';
-
-const {
-	localStorage
-} = window;
+ 
+// const {
+// 	localStorage
+// } = window;
 
 export class App extends React.Component {
 
