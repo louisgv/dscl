@@ -4,6 +4,7 @@
   "description": "Decentralized Socket Connection Lobby",
   "main": "webpack.config.js",
   "dependencies": {
+    "aes-js": "^3.1.0",
     "bignumber.js": "^4.0.2",
     "diffie-hellman": "^5.0.2",
     "oo7": "^0.5.0",
