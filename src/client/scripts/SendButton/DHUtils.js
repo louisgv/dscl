@@ -1,5 +1,8 @@
 import {createDiffieHellman} from 'diffie-hellman/browser';
-var shake_128 = require('js-sha3').shake_128;
+
+// NOTE: These two are equivalent. 
+// var shake_128 = require('js-sha3').shake_128;
+import {shake_128} from 'js-sha3';
 
 export default class DHUtils{
 
