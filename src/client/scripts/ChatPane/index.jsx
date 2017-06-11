@@ -8,7 +8,7 @@ export default class ChatPane extends Component{
 			<Comment.Group style={{
 					paddingBottom: 90
 				}}>
-				<Header as='h3' dividing>Comments</Header>
+				<Header as='h3' dividing>Conversation</Header>
 
 				<Comment>
 					<Comment.Avatar as='a' src='http://react.semantic-ui.com/assets/images/avatar/small/matt.jpg' />

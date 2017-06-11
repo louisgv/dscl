@@ -40,8 +40,8 @@ export class App extends React.Component {
 		this.store.tie(this.handleTie);
 	}
 
-	handleTie = ({}) => {
-
+	handleTie = (data = {}) => {
+		console.log(data);
 	}
 
 	render() {
