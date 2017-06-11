@@ -14,6 +14,7 @@ import MenuPane from './MenuPane';
 import AvatarPane from './AvatarPane';
 import ChatPane from './ChatPane';
 import ChatInput from './ChatInput';
+import SendButton from './SendButton';
 
 // const {
 // 	localStorage
@@ -51,6 +52,7 @@ export class App extends React.Component {
 				</Grid.Column>
 
 				<Grid.Column>
+					<SendButton />
 					<MenuPane store={this.store} />
 					<ChatPane store={this.store} />
 					<ChatInput store={this.store}/>
