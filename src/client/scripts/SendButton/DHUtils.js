@@ -1,4 +1,5 @@
 import {createDiffieHellman} from 'diffie-hellman/browser';
+var shake_128 = require('js-sha3').shake_128;
 
 export default class DHUtils{
 
@@ -7,9 +8,10 @@ export default class DHUtils{
 	}
 
 	calculateSecretKey(gB) {
-	    const gAB = this.myDH.computeSecret(gB)
-	    const hash_gAB = parity.api.util.sha3(gAB) //128 bits??
-	    return hash_gAB
+	    //const gAB = this.myDH.computeSecret(gB)
+	    //const hash_gAB = shake_128(gAB, 128) //128 bits??
+	    // return hash_gAB
+			return 353
 	}
 
 	get ga() {
