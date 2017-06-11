@@ -1,12 +1,17 @@
+import 'semantic-ui-css/semantic.min.css';
+
 import React from 'react';
 
 import {
 	Bond,
 } from 'oo7';
 
-import Home from './Home';
-import Login from './Login';
- 
+import { Grid } from 'semantic-ui-react'
+
+import MenuPane from './MenuPane';
+import AvatarPane from './AvatarPane';
+import ChatPane from './ChatPane';
+
 // const {
 // 	localStorage
 // } = window;
@@ -27,19 +32,23 @@ export class App extends React.Component {
 
 	}
 
-	get content() {
-		switch(this.state.view) {
-		case 'home':
-		default:
-			return(<Home store={this.store}/>)
-		}
-	}
-
 	render() {
 		return(
-			<div>
-				{this.content}
-			</div>
+			<Grid verticalAlign='middle' stackable columns={4} centered
+				style={{
+					width: '100vw',
+					height: '100vh'
+				}}>
+			  <Grid.Row>
+					<Grid.Column width={5}>
+						<MenuPane store={this.store} />
+						<AvatarPane store={this.store} />
+					</Grid.Column>
+					<Grid.Column width={5}>
+						<ChatPane store={this.store} />
+					</Grid.Column>
+			  </Grid.Row>
+			</Grid>
 		);
 	}
 }
