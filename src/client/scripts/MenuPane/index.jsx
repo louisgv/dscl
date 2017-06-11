@@ -23,16 +23,7 @@ export default class MenuPane extends Component {
 	constructor(props){
 		super(props);
 		this.address = new Bond();
-	}
-
-	handleClick = () => {
-		const value = this.address._value;
-
 		const p = new Peer({ initiator: true, trickle: false });
-
-		if (value) {
-			p.signal(JSON.parse(value));
-		}
 
 		p.on('signal', function (data) {
 		  console.log('SIGNAL', data)
@@ -47,6 +38,14 @@ export default class MenuPane extends Component {
 		p.on('data', function (data) {
 		  console.log('data: ' + data)
 		})
+		this.p = p;
+	}
+
+	handleClick = () => {
+		const value = this.address._value;
+		if (value) {
+			this.p.signal(JSON.parse(value));
+		}
 
 		// this.props.store.trigger({
 		// 	hello: "he"
@@ -60,7 +59,7 @@ export default class MenuPane extends Component {
 		return(
 			<InputBond
 					fluid
-					defaultValue='123.123.42.21'
+					defaultValue={''}
 					placeholder='Recipent IP address'
 					bond={this.address}
 					icon={<Icon name='podcast' inverted circular link onClick={this.handleClick}/>}
