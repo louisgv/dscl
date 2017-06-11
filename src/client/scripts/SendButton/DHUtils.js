@@ -17,8 +17,6 @@ export default class DHUtils{
 
 	get ga() {
 	    return this.myDH.generateKeys()
-
-
 	}
 }
 
