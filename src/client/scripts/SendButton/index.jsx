@@ -12,7 +12,8 @@ export default class MenuPane extends Component {
 
 	state = {
 		dh: undefined,
-		ga: undefined
+		ga: undefined,
+		gab: undefined
 	}
 
 	onClick =()=> {
@@ -34,6 +35,8 @@ export default class MenuPane extends Component {
 
 				<div>
 					ga: {this.state.ga}
+					<br />
+					gab: {this.state.gab}
 				</div>
 			</div>
 		);
