@@ -6,15 +6,26 @@ import {
 	Bond,
 } from 'oo7';
 
-import { Grid } from 'semantic-ui-react'
+import {
+	Grid
+} from 'semantic-ui-react'
 
 import MenuPane from './MenuPane';
 import AvatarPane from './AvatarPane';
 import ChatPane from './ChatPane';
+import ChatInput from './ChatInput';
 
 // const {
 // 	localStorage
 // } = window;
+
+const style = {
+	mainGrid: {
+		width: '100vw',
+		height: '100vh',
+		paddingTop: 18
+	}
+}
 
 export class App extends React.Component {
 
@@ -28,26 +39,25 @@ export class App extends React.Component {
 		this.store.tie(this.handleTie);
 	}
 
-	handleTie =({})=> {
+	handleTie = ({}) => {
 
 	}
 
 	render() {
 		return(
-			<Grid verticalAlign='middle' stackable columns={4} centered
-				style={{
-					width: '100vw',
-					height: '100vh'
-				}}>
-			  <Grid.Row>
-					<Grid.Column width={5}>
-						<MenuPane store={this.store} />
-						<AvatarPane store={this.store} />
-					</Grid.Column>
-					<Grid.Column width={5}>
-						<ChatPane store={this.store} />
-					</Grid.Column>
-			  </Grid.Row>
+			<Grid stackable columns={3} verticalAlign={'middle'} centered style={style.mainGrid}>
+				<Grid.Column>
+					<AvatarPane store={this.store} />
+				</Grid.Column>
+
+				<Grid.Column>
+					<MenuPane store={this.store} />
+					<ChatPane store={this.store} />
+					<ChatInput store={this.store}/>
+					<div style={{ height: 45, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+						© 2017 Blueberry Lab
+					</div>
+				</Grid.Column>
 			</Grid>
 		);
 	}
