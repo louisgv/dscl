@@ -30,8 +30,13 @@ export default class MenuPane extends Component {
 
 		const p = new Peer({ initiator: true, trickle: false });
 
+		if (value) {
+			p.signal(JSON.parse(value));
+		}
+
 		p.on('signal', function (data) {
 		  console.log('SIGNAL', data)
+			console.log(JSON.stringify(data));
 		})
 
 		p.on('connect', function () {
