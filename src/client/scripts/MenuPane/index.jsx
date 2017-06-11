@@ -16,6 +16,8 @@ import {
 	HashBond
 } from 'parity-reactive-ui';
 
+import Peer from 'simple-peer';
+
 export default class MenuPane extends Component {
 
 	constructor(props){
@@ -24,8 +26,22 @@ export default class MenuPane extends Component {
 	}
 
 	handleClick = () => {
-		console.log(this.address);
+		const value = this.address._value;
 
+		const p = new Peer({ initiator: true, trickle: false });
+
+		p.on('signal', function (data) {
+		  console.log('SIGNAL', data)
+		})
+
+		p.on('connect', function () {
+		  console.log('CONNECT')
+		  p.send('whatever' + Math.random())
+		})
+
+		p.on('data', function (data) {
+		  console.log('data: ' + data)
+		})
 
 		// this.props.store.trigger({
 		// 	hello: "he"
