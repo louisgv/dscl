@@ -12,8 +12,7 @@ export default class DHUtils{
 	    return hash_gAB
 	}
 
-	calculate_gA() {
-	    const gA = this.myDH.generateKeys()
-	    return gA
+	get ga() {
+	    return this.myDH.generateKeys()
 	}
 }

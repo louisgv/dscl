@@ -21,7 +21,7 @@ export default class MenuPane extends Component {
 
 		const dh = new DHUtils();
 
-		const ga = dh.calculate_gA();
+		const {ga} = dh;
 
 		this.setState({ dh, ga });
 	}
