@@ -1,9 +1,10 @@
 import {createDiffieHellman} from 'diffie-hellman/browser'
-// import {}
-var shake_128 = require('js-sha3').shake_128;
 
-export default class DHUtils{
+import {
+	shake_128
+} from 'js-sha3';
 
+export default class DHUtils {
 	constructor(){
 		this.myDH = createDiffieHellman("modp16") //modp2 is 1024 bit prime
 		// this.myDH2 = createDiffieHellman("modp16") //for testing purposes
@@ -18,7 +19,6 @@ export default class DHUtils{
 	get ga() {
 	    return this.myDH.generateKeys()
 	}
-
 }
 
 // var gA = this.myDH1.generateKeys()
