@@ -34,10 +34,21 @@ export default class MenuPane extends Component {
 
 		p.on('signal', async function (data) {
 		  console.log('SIGNAL', data)
-			const key = Math.random();
-			await this.dscl.store(`${key}`, data);
-			console.log(this.dscl.get(`${key}`));
-		})
+
+			try {
+				const encryptedData = this.dscl.encrypt(data);
+
+				const node = await this.dscl.store({encryptedData});
+
+				const multihash = node.toJSON().multihash;
+				console.log(multihash);
+
+				const value = await this.dscl.get(multihash);
+				console.log(value);
+			} catch (e) {
+				console.error(e);
+			}
+		}.bind(this))
 
 		p.on('connect', function () {
 		  console.log('CONNECT')

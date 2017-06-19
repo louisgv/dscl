@@ -1,10 +1,10 @@
-
 import {
-	bonds, formatBalance, isNullData
+	bonds,
+	formatBalance,
+	isNullData
 } from 'oo7-parity';
 
 import IPFS from 'ipfs';
-import OrbitDB from 'orbit-db';
 
 import {
 	DSCL_CONTRACT_HASH,
@@ -14,38 +14,56 @@ import {
 import AES from './AES';
 import DH from './DH';
 
-export default class DSCLUtils {
+export default class DSCL {
 	constructor() {
 		this.aes = new AES();
 		this.dh = new DH();
 
-		this.ipfs = new IPFS()
-		this.orbitdb = new OrbitDB(this.ipfs)
-
 		this.contract = bonds.makeContract(DSCL_CONTRACT_HASH, DSCL_CONTRACT_ABI);
 
-		this.kv = orbitdb.kvstore('dscl');
-
 		this.sessionMap = {};
+
+		// this.kv = this.orbitdb.kvstore('dscl');
+		this.ipfs = new IPFS({
+			repo: 'DSCL'
+		});
+
+		this.ipfs.on('ready', async function () {
+			this.ipfsReady = true;
+		}.bind(this))
 	}
 
-	get(key) {
-		return this.kv.get(key)
+	encrypt = () => this.aes.encrypt
+
+	decrypt = () => this.aes.decrypt
+
+	get(multihash) {
+		if(!this.ipfsReady) throw new Error(`IPFS is not ready`);
+
+		return this.ipfs.object.data(multihash);
 	}
 
-	async set(key, value) {
-		return this.kv.set(key, value);
+	store(value) {
+		if(!this.ipfsReady) reject(new Error(`IPFS is not ready`));
+
+		const data = new Buffer(JSON.stringify(value));
+
+		return this.ipfs.object.put(data);
 	}
 
 	/*
 		Send ga to the recipent
 	*/
-	requestCommunication(otherAddress){
+	requestCommunication(otherAddress) {
 		// TODO: Assign
 
-		const {ga} = this.dh;
+		const {
+			ga
+		} = this.dh;
 
-		this.sessionMap[otherAddress] = {ga};
+		this.sessionMap[otherAddress] = {
+			ga
+		};
 
 		this.contract.requestCommunication(otherAddress, ga);
 	}
@@ -57,7 +75,7 @@ export default class DSCLUtils {
 		this.contract.respondToRequest();
 	}
 
-	sendPayload(){
+	sendPayload() {
 
 	}
 }
