@@ -12,6 +12,7 @@ import {
 } from 'semantic-ui-react'
 
 import {
+	InputBond,
 	AddressBond
 } from 'parity-reactive-ui';
 
@@ -73,10 +74,10 @@ export default class MenuPane extends Component {
 		// })
 	}
 
-	async processInvite() {
+	processInvite = async () => {
 		const hash = this.inviteHash._value;
 
-		if (!value) return;
+		if (!hash) return;
 
 		const p = new Peer({ initiator: false, trickle: false });
 		this.handlePeerEvent(p);
