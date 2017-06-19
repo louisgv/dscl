@@ -31,6 +31,7 @@ module.exports = {
 		// })
 	],
   resolve: {
+		symlinks: false,
     extensions: ['.js', '.json', '.jsx']
   }
 };

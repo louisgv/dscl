@@ -7,14 +7,15 @@ import {
 } from 'oo7';
 
 import {
-	Icon,
-	Input
+	Button,
+	Icon
 } from 'semantic-ui-react'
 
 import {
-	InputBond,
-	HashBond
+	AddressBond
 } from 'parity-reactive-ui';
+
+import DSCL from '../DSCL';
 
 import Peer from 'simple-peer';
 
@@ -23,11 +24,19 @@ export default class MenuPane extends Component {
 	constructor(props){
 		super(props);
 		this.address = new Bond();
+		this.dscl = new DSCL();
+	}
+
+	handleClick = () => {
+		const value = this.address._value;
+
 		const p = new Peer({ initiator: true, trickle: false });
 
-		p.on('signal', function (data) {
+		p.on('signal', async function (data) {
 		  console.log('SIGNAL', data)
-			console.log(JSON.stringify(data));
+			const key = Math.random();
+			await this.dscl.store(`${key}`, data);
+			console.log(this.dscl.get(`${key}`));
 		})
 
 		p.on('connect', function () {
@@ -39,13 +48,10 @@ export default class MenuPane extends Component {
 		  console.log('data: ' + data)
 		})
 		this.p = p;
-	}
 
-	handleClick = () => {
-		const value = this.address._value;
-		if (value) {
-			this.p.signal(JSON.parse(value));
-		}
+		// if (value) {
+		// 	this.p.signal(JSON.parse(value));
+		// }
 
 		// this.props.store.trigger({
 		// 	hello: "he"
@@ -57,13 +63,18 @@ export default class MenuPane extends Component {
 		/>*/
 	render() {
 		return(
-			<InputBond
+			<div>
+				<AddressBond
 					fluid
-					defaultValue={''}
-					placeholder='Recipent IP address'
+					defaultValue={'0x00D4cD27DC890b058c49Ca8D29D6678014214B48'}
+					placeholder='Recipent address'
 					bond={this.address}
-					icon={<Icon name='podcast' inverted circular link onClick={this.handleClick}/>}
-		/>
+					style={{
+							marginBottom: 9
+						}}
+					/>
+				<Button content='Send Request' inverted color='green' fluid icon='send' labelPosition='right' onClick={this.handleClick}/>
+			</div>
 	);
 }
 }

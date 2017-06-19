@@ -6,7 +6,7 @@ import {
 	Button
 } from 'semantic-ui-react'
 
-import DSCLContract from './DSCLContract';
+import DSCL from '../DSCL';
 
 export default class MenuPane extends Component {
 
