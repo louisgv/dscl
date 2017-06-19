@@ -11,7 +11,7 @@ export default class AES{
     return this.aesCtr.encrypt(textBytes);
 	}
 
-	descrypt(encryptedBytes) {
+	decrypt(encryptedBytes) {
 		return this.aesCtr.decrypt(encryptedBytes);
 	}
 }
