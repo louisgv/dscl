@@ -33,9 +33,13 @@ export default class DSCL {
 		}.bind(this))
 	}
 
-	encrypt = () => this.aes.encrypt
+	encrypt(m) {
+		return this.aes.encrypt(m)
+	}
 
-	decrypt = () => this.aes.decrypt
+	decrypt(em){
+		return this.aes.decrypt(em)
+	}
 
 	get(multihash) {
 		if(!this.ipfsReady) throw new Error(`IPFS is not ready`);
@@ -44,9 +48,9 @@ export default class DSCL {
 	}
 
 	store(value) {
-		if(!this.ipfsReady) reject(new Error(`IPFS is not ready`));
+		if(!this.ipfsReady) throw new Error(`IPFS is not ready`);
 
-		const data = new Buffer(JSON.stringify(value));
+		const data = new Buffer(value);
 
 		return this.ipfs.object.put(data);
 	}

@@ -34,15 +34,22 @@ export default class MenuPane extends Component {
 		  console.log('SIGNAL', data)
 
 			try {
-				const encryptedData = this.dscl.encrypt(JSON.toString(data));
+				const encryptedData =
+					this.dscl.encrypt(JSON.stringify(data));
+				console.log('ED', encryptedData);
 
-				const node = await this.dscl.store({encryptedData});
+				const node = await this.dscl.store(encryptedData);
 
 				const multihash = node.toJSON().multihash;
 				console.log(multihash);
 
 				const value = await this.dscl.get(multihash);
-				console.log(value);
+
+				const em = value.toString();
+
+				const decryptedData = await this.dscl.decrypt(em)
+
+				console.log('DD', decryptedData);
 			} catch (e) {
 				console.error(e);
 			}
