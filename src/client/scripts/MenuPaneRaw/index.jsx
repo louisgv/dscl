@@ -16,8 +16,6 @@ import {
 	AddressBond
 } from 'parity-reactive-ui';
 
-import DSCL from '../DSCL';
-
 import Peer from 'simple-peer';
 
 export default class MenuPane extends Component {
@@ -25,30 +23,11 @@ export default class MenuPane extends Component {
 	constructor(props) {
 		super(props);
 		this.inviteHash = new Bond();
-		this.address = new Bond();
-		this.dscl = new DSCL();
 	}
 
 	handlePeerEvent = (peer) => {
 		peer.on('signal', async function (data) {
-			console.log('SIGNAL', data)
-
-			try {
-				const encryptedData =
-					this.dscl.encrypt(JSON.stringify(data));
-
-				const node = await this.dscl.store(encryptedData);
-
-				const multihash = node.toJSON()
-					.multihash;
-
-				console.log(multihash);
-				// TODO: ENCRYPT THE HASH WITH a gx key
-
-				// TODO: SEND THIS HASH VIA THE CONRTRACT
-			} catch(e) {
-				console.error(e);
-			}
+			console.log('SIGNAL', JSON.stringify(data))
 		}.bind(this))
 
 		peer.on('connect', function () {
@@ -63,13 +42,11 @@ export default class MenuPane extends Component {
 		this.peer = peer;
 	}
 
-	makeInvite = () => {
+	handleClick = () => {
 		const peer = new Peer({
 			initiator: true,
 			trickle: false
 		});
-
-		this.props.store.trigger({ name: "ORIGIN" })
 
 		this.handlePeerEvent(peer);
 	}
@@ -85,22 +62,11 @@ export default class MenuPane extends Component {
 				trickle: false
 			});
 			this.handlePeerEvent(peer);
-
-			this.props.store.trigger({ name: "NIGIRO" })
 		}
 
-		const value = await this.dscl.get(hash);
-
-		const em = value.toString();
-
-		const decryptedData = await this.dscl.decrypt(em)
-
-		this.peer.signal(JSON.parse(decryptedData));
+		this.peer.signal(JSON.parse(hash));
 	}
 
-	/*<HashBond fluid placeholder='Recipent ETH address'
-		icon={<Icon name='podcast' inverted circular link />}
-		/>*/
 	render() {
 		return(
 			<div>
@@ -111,15 +77,7 @@ export default class MenuPane extends Component {
 						bond={this.inviteHash}
 						icon={<Icon name='podcast' inverted circular link onClick={this.processInvite}/>}
 					/>
-				<AddressBond
-					defaultValue={'0x00D4cD27DC890b058c49Ca8D29D6678014214B48'}
-					placeholder='Recipent address'
-					bond={this.address}
-					style={{
-							marginBottom: 9
-						}}
-					/>
-				<Button content='Invite' inverted color='green' fluid icon='send' labelPosition='right' onClick={this.makeInvite}/>
+				<Button content='Send Request' inverted color='green' fluid icon='send' labelPosition='right' onClick={this.handleClick}/>
 			</div>
 		);
 	}

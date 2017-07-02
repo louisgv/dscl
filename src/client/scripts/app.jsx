@@ -10,6 +10,7 @@ import {
 	Grid
 } from 'semantic-ui-react'
 
+import MenuPaneRaw from './MenuPaneRaw';
 import MenuPane from './MenuPane';
 import AvatarPane from './AvatarPane';
 import ChatPane from './ChatPane';
@@ -53,6 +54,9 @@ export class App extends React.Component {
 
 				<Grid.Column>
 					<MenuPane store={this.store} />
+					{/*
+						<MenuPaneRaw store={this.store} />
+						*/}
 					<ChatPane store={this.store} />
 					<ChatInput store={this.store}/>
 					<div style={{ height: 45, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
