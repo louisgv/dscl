@@ -6,13 +6,9 @@ import {
 	Button
 } from 'semantic-ui-react'
 
-import DSCL from '../DSCL';
-
-export default class MenuPane extends Component {
+export default class SendButton extends Component {
 
 	onClick =()=> {
-		console.log("You Clicked! Now generating dh and ga");
-
 		// TODO: Send ga to the recipient
 		// this.contract = new DSCLContract();
 		// DSCLContract.requestCommunication(otherAddress);

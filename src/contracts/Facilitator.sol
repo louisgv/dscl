@@ -1,55 +1,26 @@
-pragma solidity ^0.4.11;
-contract Facilitator {
+pragma solidity ^0.4.12;
 
-    uint public gasToTimeRatio = 5000;
+contract DSCL {
 
-		uint public globalPublicKey = 4294937295;
+    function DSCL(){}
 
-		struct SessionData {
-			bytes32	encryptedIP;
-			uint startTimestamp;
-			uint sessionMaxReward;
+    event IPFS_only(address from, address indexed to, string IPFS_ref, uint timestampt);
+    event diffie_IPFS(address from, address indexed to, string gB, string IPFS_ref, uint timestampt);
+    event diffie_only(address from, address indexed to, string gA, uint timestampt);
 
-			uint randomFromA;
-			uint randomFromB;
-		}
-
-		mapping (address => SessionData) public sessionData;
-
-		event SessionInitiated(
-			uint globalKey,
-			uint randomFromA,
-			uint randomFromB,
-			bytes data
-		);
-
-		event Sent(address from, address to, uint amount);
-
-		/* A will call this to send B a request
-		*/
-		function requestSession(address _host) {
-			
-		}
-
-		/* A will call this after receiving B's public secret
-		*/
-    function initiateSession(address _host){
-
-			// one gas equal 5 seconds or 5000ms
-			sessionData[_host].startTimestamp = now;
-
-	    SessionInitiated(
-				globalPublicKey,
-				sessionData[_host].randomFromA,
-				sessionData[_host].randomFromB,
-				msg.data
-			);
+    // this function sends the IPFS refence from user A to B
+    // both user's can then query IPFS and unecrypt the data outside the contract
+    function sendPayload(address to, string IPFS_ref) {
+          IPFS_only(msg.sender, to, IPFS_ref, now);
     }
 
-		/* B will call this to receive reward from A
-		*/
-    function validateSession(){
-        /*uint reward = (now - sessionStartTimestamp)/gasToTimeRatio;
-        host.transfer(reward);*/
+    //this is the second part of diffie helman
+    function respondToRequest(address to, string gB, string IPFS_ref) {
+          diffie_IPFS(msg.sender, to, gB, IPFS_ref, now);
+    }
+
+    // sends the diffie helman key (G^A) to user B.
+    function requestCommunication(address to, string gA) {
+          diffie_only(msg.sender, to, gA, now);
     }
 }

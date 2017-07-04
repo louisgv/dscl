@@ -2,6 +2,8 @@ import React, {
 	Component
 } from 'react'
 
+import PropTypes from 'prop-types';
+
 import {
 	Bond,
 } from 'oo7';
@@ -20,82 +22,120 @@ import DSCL from '../DSCL';
 
 import Peer from 'simple-peer';
 
+/*eslint-disable no-unused-vars*/
+function getStream () {
+	return new Promise(function(resolve, reject) {
+		navigator.getUserMedia({ video: true, audio: false }, resolve, reject);
+	});
+}
+/*eslint-enable no-unused-vars*/
+
 export default class MenuPane extends Component {
+
+	static propTypes = {
+		store : PropTypes.object
+	};
 
 	constructor(props) {
 		super(props);
+
 		this.inviteHash = new Bond();
+
 		this.address = new Bond();
-		this.dscl = new DSCL();
+
+		this.dscl = new DSCL({
+			handleInvite: this.handleInvite,
+			handleHostInfo: this.handleHostInfo,
+			handleGuestInfo: this.handleGuestInfo
+		});
 	}
 
-	handlePeerEvent = (peer) => {
-		peer.on('signal', async function (data) {
-			console.log('SIGNAL', data)
+	sendInvite =()=> {
+		const otherAddress = this.address._value;
 
-			try {
-				const encryptedData =
-					this.dscl.encrypt(JSON.stringify(data));
-
-				const node = await this.dscl.store(encryptedData);
-
-				const multihash = node.toJSON()
-					.multihash;
-
-				console.log(multihash);
-				// TODO: ENCRYPT THE HASH WITH a gx key
-
-				// TODO: SEND THIS HASH VIA THE CONRTRACT
-			} catch(e) {
-				console.error(e);
-			}
-		}.bind(this))
-
-		peer.on('connect', function () {
-			this.props.store.trigger({ peer })
-		}.bind(this))
-
-		peer.on('data', function (data) {
-			const message = JSON.parse(data);
-			this.props.store.trigger({ message })
-		}.bind(this))
-
-		this.peer = peer;
+		this.dscl.setOtherAddress(otherAddress);
+		this.dscl.sendInvite(otherAddress);
 	}
 
-	makeInvite = () => {
+	handleInvite =(data)=> {
+		if (!this.dscl.isDataValid(data)) return;
+
+		const {from, gA} = data[data.length - 1];
+
+		// const stream = await getStream();
 		const peer = new Peer({
 			initiator: true,
-			trickle: false
+			trickle: false,
+			// stream
 		});
 
-		this.props.store.trigger({ name: "ORIGIN" })
+		this.dscl.setOtherAddress(from);
+		this.dscl.setOtherGX(gA);
 
 		this.handlePeerEvent(peer);
 	}
 
-	processInvite = async() => {
-		const hash = this.inviteHash._value;
+	handleHostInfo = async (data)=> {
+		if (!this.dscl.isDataValid(data)) return;
 
-		if(!hash) return;
+		const {gB, IPFS_ref} = data[data.length - 1];
 
-		if(!this.peer) {
-			const peer = new Peer({
-				initiator: false,
-				trickle: false
-			});
-			this.handlePeerEvent(peer);
+		const peer = new Peer({
+			initiator: false,
+			trickle: false
+		});
 
-			this.props.store.trigger({ name: "NIGIRO" })
-		}
+		this.dscl.setOtherGX(gB);
 
-		const value = await this.dscl.get(hash);
+		this.handlePeerEvent(peer);
+		this.handleInfo(IPFS_ref);
+	}
+
+	handleGuestInfo =(data)=> {
+		if (!this.dscl.isDataValid(data)) return;
+
+		const {IPFS_ref} = data[data.length - 1];
+
+		this.handleInfo(IPFS_ref);
+	}
+
+	handleInfo = async(multihash) => {
+		const value = await this.dscl.get(multihash);
 
 		const em = value.toString();
 
 		const decryptedData = await this.dscl.decrypt(em)
 
 		this.peer.signal(JSON.parse(decryptedData));
+	}
+
+	handlePeerEvent =(peer) => {
+		peer.on('signal', async (data) => {
+			// console.log('SIGNAL', data)
+			try {
+				await this.dscl.reply(data, peer.initiator);
+			} catch(error) {
+				this.props.store.trigger({ error })
+			}
+		})
+
+		peer.on('connect', () => {
+			this.props.store.trigger({
+				name: peer.initiator ? "ORIGIN" : "NIGIRO",
+				peer
+			})
+		})
+
+		peer.on('data', (data) => {
+			const message = JSON.parse(data);
+			this.props.store.trigger({ message })
+		})
+
+		peer.on('stream', (stream) => {
+			this.props.store.trigger({ stream })
+		})
+
+		this.peer = peer;
 	}
 
 	/*<HashBond fluid placeholder='Recipent ETH address'
@@ -106,7 +146,6 @@ export default class MenuPane extends Component {
 			<div>
 				<InputBond
 						fluid
-						defaultValue={''}
 						placeholder='Invite Hash'
 						bond={this.inviteHash}
 						icon={<Icon name='podcast' inverted circular link onClick={this.processInvite}/>}
@@ -119,7 +158,9 @@ export default class MenuPane extends Component {
 							marginBottom: 9
 						}}
 					/>
-				<Button content='Invite' inverted color='green' fluid icon='send' labelPosition='right' onClick={this.makeInvite}/>
+				<Button content='Invite' inverted color='green'
+					fluid icon='send' labelPosition='right'
+					onClick={this.sendInvite}/>
 			</div>
 		);
 	}

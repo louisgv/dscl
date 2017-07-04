@@ -53,6 +53,7 @@ export default class ChatInput extends Component {
 		return(
 			<InputBond fluid placeholder='Send message'
 				bond={this.text}
+				onChange={this.handleKeyDown}
 				icon={<Icon name='hand pointer' inverted circular link onClick={this.sendMessage}/>}
 				/>
 		);

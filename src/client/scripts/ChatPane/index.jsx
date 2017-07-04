@@ -1,37 +1,24 @@
 import React, { Component } from 'react'
 
+import PropTypes from 'prop-types';
+
 import { Comment, Header } from 'semantic-ui-react'
 
 import ChatMessage from './ChatMessage';
 
 const imageMap = {
-	Matt : 'http://react.semantic-ui.com/assets/images/avatar/small/matt.jpg',
-	Joe : 'http://react.semantic-ui.com/assets/images/avatar/small/joe.jpg'
+	ORIGIN : 'http://react.semantic-ui.com/assets/images/avatar/small/matt.jpg',
+	NIGIRO : 'http://react.semantic-ui.com/assets/images/avatar/small/joe.jpg'
 }
-
-const sampleConvo = [
-	{
-		name: 'Matt',
-		text: 'Yo'
-	},
-	{
-		name: 'Joe',
-		text: 'Hello'
-	},
-	{
-		name: 'Matt',
-		text: 'How\'s it going?'
-	},
-	{
-		name: 'Joe',
-		text: 'Fine'
-	},
-]
 
 export default class ChatPane extends Component {
 
+	static propTypes = {
+		store : PropTypes.object
+	};
+
 	state = {
-		convo : sampleConvo
+		convo : []
 	}
 
 	constructor(props){
@@ -47,7 +34,13 @@ export default class ChatPane extends Component {
 
 	handleTie = (data = {}) => {
 		if (data.message) {
-			this.addMessage(message);
+			this.addMessage(data.message);
+		}
+		if (data.error) {
+			this.addMessage({
+				name: 'ERROR',
+				text: data.error.message
+			})
 		}
 	}
 
