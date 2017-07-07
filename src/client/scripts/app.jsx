@@ -10,12 +10,10 @@ import {
 	Grid
 } from 'semantic-ui-react'
 
-import MenuPaneRaw from './MenuPaneRaw';
 import MenuPane from './MenuPane';
 import AvatarPane from './AvatarPane';
 import ChatPane from './ChatPane';
 import ChatInput from './ChatInput';
-import SendButton from './SendButton';
 
 // const {
 // 	localStorage

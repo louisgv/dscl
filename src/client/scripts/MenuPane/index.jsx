@@ -115,14 +115,24 @@ export default class MenuPane extends Component {
 			try {
 				await this.dscl.reply(data, peer.initiator);
 			} catch(error) {
-				this.props.store.trigger({ error })
+				this.props.store.trigger({
+					error,
+					message: {
+						name: 'ERROR',
+						text: error.message
+					}
+				})
 			}
 		})
 
 		peer.on('connect', () => {
 			this.props.store.trigger({
+				peer,
 				name: peer.initiator ? "ORIGIN" : "NIGIRO",
-				peer
+				message: {
+					name: 'CONNECTION ESTABLISHED',
+					text: 'You can now chat with the other person.'
+				}
 			})
 		})
 

@@ -36,12 +36,6 @@ export default class ChatPane extends Component {
 		if (data.message) {
 			this.addMessage(data.message);
 		}
-		if (data.error) {
-			this.addMessage({
-				name: 'ERROR',
-				text: data.error.message
-			})
-		}
 	}
 
 	render() {

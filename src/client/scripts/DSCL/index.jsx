@@ -6,7 +6,7 @@ import aesjs from 'aes-js';
 
 import IPFS from 'ipfs';
 
-import { createDiffieHellman } from 'diffie-hellman/browser';
+import { getDiffieHellman } from 'diffie-hellman/browser';
 
 import {
 	shake_128,
@@ -25,7 +25,7 @@ export default class DSCL {
 	}) {
 		this.initTime = Date.now();
 
-    this.dh = createDiffieHellman("modp16");
+    this.dh = getDiffieHellman("modp16");
 
 		this.ipfs = new IPFS({
 			repo: 'DSCL',
@@ -59,7 +59,9 @@ export default class DSCL {
 		if (!this.otherGX) throw new Error('Did not receive other gx');
 
 		const gxBytes = aesjs.utils.hex.toBytes(this.otherGX);
-		const gAB = this.dh.computeSecret(gxBytes);
+
+		const gAB = this.dh.computeSecret(new Uint8Array(gxBytes));
+
 		this.key = aesjs.utils.hex.toBytes(shake_128(gAB, 128));
 	}
 
