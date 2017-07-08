@@ -9,12 +9,10 @@ import {
 } from 'oo7';
 
 import {
-	Button,
-	Icon
+	Button
 } from 'semantic-ui-react'
 
 import {
-	InputBond,
 	AddressBond
 } from 'parity-reactive-ui';
 
@@ -155,19 +153,17 @@ export default class MenuPane extends Component {
 		this.peer = peer;
 	}
 
-	/*<HashBond fluid placeholder='Recipent ETH address'
-		icon={<Icon name='podcast' inverted circular link />}
-		/>*/
 	render() {
 		return(
 			<div>
-				<InputBond
-						fluid
-						placeholder='Invite Hash'
-						bond={this.inviteHash}
-						icon={<Icon name='podcast' inverted circular link onClick={this.processInvite}/>}
-					/>
 				<AddressBond
+					action={{
+						color: 'teal',
+						labelPosition: 'right',
+						icon: 'send',
+						content: 'Invite',
+						onClick : this.sendInvite
+					}}
 					defaultValue={'0x00D4cD27DC890b058c49Ca8D29D6678014214B48'}
 					placeholder='Recipent address'
 					bond={this.address}
@@ -175,9 +171,6 @@ export default class MenuPane extends Component {
 							marginBottom: 9
 						}}
 					/>
-				<Button content='Invite' inverted color='green'
-					fluid icon='send' labelPosition='right'
-					onClick={this.sendInvite}/>
 			</div>
 		);
 	}
