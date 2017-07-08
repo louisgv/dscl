@@ -104,7 +104,14 @@ export default class MenuPane extends Component {
 
 		const em = value.toString();
 
-		const decryptedData = await this.dscl.decrypt(em)
+		const decryptedData = await this.dscl.decrypt(em);
+
+		this.props.store.trigger({
+			message: {
+				name: 'INFO: WEBRTC TOKEN',
+				text: decryptedData
+			}
+		})
 
 		this.peer.signal(JSON.parse(decryptedData));
 	}
