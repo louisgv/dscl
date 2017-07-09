@@ -12,8 +12,7 @@ import {
 } from 'semantic-ui-react'
 
 import {
-	InputBond,
-	AddressBond
+	InputBond
 } from 'parity-reactive-ui';
 
 import Peer from 'simple-peer';
@@ -31,7 +30,14 @@ export default class MenuPane extends Component {
 		}.bind(this))
 
 		peer.on('connect', function () {
-			this.props.store.trigger({ peer })
+			this.props.store.trigger({
+				peer,
+				name: peer.initiator ? "ORIGIN" : "NIGIRO",
+				message: {
+					name: 'CONNECTION ESTABLISHED',
+					text: 'You can now chat with the other person.'
+				}
+			})
 		}.bind(this))
 
 		peer.on('data', function (data) {
