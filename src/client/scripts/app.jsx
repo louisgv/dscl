@@ -52,9 +52,9 @@ export class App extends React.Component {
 				</Grid.Column>
 
 				<Grid.Column>
-					<MenuPaneRaw store={this.store} />
+					<MenuPane store={this.store} />
 					{/*
-						<MenuPane store={this.store} />
+						<MenuPaneRaw store={this.store} />
 						*/}
 					<ChatPane store={this.store} />
 					<ChatInput store={this.store}/>
