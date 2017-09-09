@@ -11,7 +11,7 @@ import {
 } from 'semantic-ui-react'
 
 import MenuPane from './MenuPane';
-import MenuPaneRaw from './MenuPaneRaw';
+// import MenuPaneRaw from './MenuPaneRaw';
 import AvatarPane from './AvatarPane';
 import ChatPane from './ChatPane';
 import ChatInput from './ChatInput';
