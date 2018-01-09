@@ -1,4 +1,6 @@
-# DSCL
+# DSCL (DEPRECATED)
+
+Project has been moved to [Vanillin](https://github.com/nonalab/vanillin)
 
 ## Decentralized Socket Connection Lobby
 
